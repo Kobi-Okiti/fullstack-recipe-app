@@ -27,6 +27,17 @@ app.post("/api/favorites", async(req, res) => {
   }
 });
 
+app.get("/api/favorites/:userId", async(req, res) => {
+  try {
+    const { userId } = req.params;
+    const favorites = await db.select().from(favotites).where(eq(favotites.userId, userId));
+    res.status(200).json(favorites);
+  } catch (error) {
+    console.error("Error fetching favorites:", error);
+    res.status(500).json({ error: "Something went wrong" });
+  }
+});
+
 app.delete("/api/favorites/:userId/:recipeId", async(req, res) => {
   try {
     const { userId, recipeId } = req.params;
